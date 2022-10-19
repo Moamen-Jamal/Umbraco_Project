@@ -1,0 +1,58 @@
+﻿@inherits UmbracoViewPage
+
+@{
+    var newsDetailsPage = Umbraco.AssignedContentItem.AncestorOrSelf<NewsDetails>();
+}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @if (newsDetailsPage != null)
+            {
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a href="@newsDetailsPage.Url()">
+                        @if (!String.IsNullOrWhiteSpace(newsDetailsPage.Title))
+                        {
+                            <h2 class="post-title">@newsDetailsPage.Title</h2>
+
+                        }
+                        @if (!String.IsNullOrWhiteSpace(newsDetailsPage.Description))
+                        {
+                            <h3 class="post-subtitle">@newsDetailsPage.Description</h3>
+
+                        }
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        @if (!String.IsNullOrWhiteSpace(newsDetailsPage.CreatorName()))
+                        {
+                            <a href="#!">@newsDetailsPage.CreatorName()</a>
+
+                        }
+
+                        <br>
+                        @if (newsDetailsPage.CreateDate != default(DateTime))
+                        {
+                            <span>Created Date: @newsDetailsPage.CreateDate</span>
+
+                        }
+                        @if (newsDetailsPage.UpdateDate != default(DateTime))
+                        {
+                            <br />
+                            <span>Updated Date: @newsDetailsPage.UpdateDate</span>
+
+                        }
+                    </p>
+                    @if (newsDetailsPage.Image != null)
+                    {
+                        <div class="image"> <a href="@newsDetailsPage.Image.Url()"><img src="@newsDetailsPage.Image.GetCropUrl(width: 900, height: 300)" class="d-block w-100" alt="@newsDetailsPage.Image.Name" /></a> </div>
+
+                    }
+                    @*<img src="@newsDetailsPage.Image.GetCropUrl(width: 900, height: 300)" class="d-block w-100" alt="@newsDetailsPage.Image.Name" />
+                *@
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

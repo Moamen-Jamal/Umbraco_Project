@@ -1,0 +1,55 @@
+﻿@inherits UmbracoViewPage
+
+@{
+    var NewsPage = Umbraco.AssignedContentItem.AncestorOrSelf<News>();
+    //var children = homePage?.Children?.Where(x => x.IsVisible()) ?? Enumerable.Empty<IPublishedContent>();
+    //var children = homePage.MainNavigation;
+    var NewsList = NewsPage?.ChildrenOfType("newsDetails")?.Where(x => x.IsVisible()).OrderByDescending(x => x.CreateDate);
+}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @if (NewsList != null && NewsList.Count() > 0)
+            {
+                foreach (var news in NewsList)
+                {
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="@news.Url()">
+                            @if (news.Value("title") != null && !String.IsNullOrWhiteSpace(news.Value("title")?.ToString()))
+                            {
+                                <h2 class="post-title">@news.Value("title")?.ToString()</h2>
+
+                            }
+                            @if (news.Value("description") != null && !String.IsNullOrWhiteSpace(news.Value("description")?.ToString()))
+                            {
+                                <p>
+                                    @Html.Truncate(news.Value("description")?.ToString(), 20, true)
+                                    <span style="text-decoration:underline !important" href="@news.Url()">Read More..</span>
+                                </p>
+
+                            }
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            @if (!String.IsNullOrWhiteSpace(news.CreatorName()))
+                            {
+                                <a href="#!">@news.CreatorName()</a>
+
+                            }
+                            @if (news.CreateDate != default(DateTime))
+                            {
+                                <a href="#!">@news.CreateDate</a>
+
+                            }
+
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                }
+            }
+
+        </div>
+    </div>
+</div>

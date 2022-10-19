@@ -1,0 +1,53 @@
+﻿@using UmbracoCleanBlog.Controllers;
+@model UmbracoCleanBlog.Models.ContactFormModel;
+<head>
+    <link href="~/css/contactform.css" rel="stylesheet" />
+</head>
+
+<div class="container-contact">
+    @using (Html.BeginUmbracoForm<ContactFormController>(nameof(ContactFormController.Submit)))
+    {
+        @if (TempData["ContactResult"] != null)
+        {
+            <div class="form-group"></div>
+            <div class="form-group"></div>
+            <br />
+            <br />
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @TempData["ContactResult"]?.ToString()
+            </div>
+        }
+        <div class="form-group"></div>
+        <br />
+        <br />
+        <div class="form-group">
+            <label for="name">User Name</label>
+            <input class="contact-form" type="text" minlength="3" maxlength="20" id="userName" name="userName" placeholder="Your user name.." required>
+            @Html.ValidationMessageFor(i => i.UserName,"",new { @style="color:red !important; font-size:medium !important"})
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="contact-form" id="email" name="email" placeholder="Your email.." required>
+            @Html.ValidationMessageFor(i => i.Email,"",new { @style="color:red !important; font-size:medium !important"})
+        </div>
+
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" class="contact-form" maxlength="20" id="subject" name="subject" placeholder="Your subject.." required>
+            @Html.ValidationMessageFor(i => i.Subject, "",new { @style="color:red !important; font-size:medium !important"})
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea class="contact-form" minlength="5" maxlength="300" id="message" name="message" placeholder="Write something.." style="height:200px" required></textarea>
+            @Html.ValidationMessageFor(i => i.Message,"",new { @style="color:red !important; font-size:medium !important"})
+        </div>
+        
+        <br />
+        <div class="form-group">
+            <input class="contact-submit" type="submit" name="Submit" value="Submit" />
+        </div>
+    }
+</div>

@@ -1,0 +1,54 @@
+﻿@inherits UmbracoViewPage<BlockListItem>
+
+
+
+@{
+    var row = (FeaturedItemsRow)Model.Content;
+    var settings = (FeaturedItemsRowSettings)Model.Settings;
+    if (settings?.Hide ?? false)
+    {
+        return;
+    }
+    if (row.FeaturedItems == null || !row.FeaturedItems.Any()) return;
+}
+
+
+
+<div class="row gx-4 gx-lg-5 justify-content-center">
+    <header class="text-center">
+        <h2>@row.Title</h2>
+        <p>@row.Description</p>
+    </header>
+    @foreach (var item in row.FeaturedItems)
+    {
+        var rowItems = (ImageLinkItem)item.Content;
+        var rowSettings = (ImageLinkItemSettings)item.Settings;
+        if (rowSettings.Hide)
+        {
+            continue; 
+        }
+        <div class="card col-md-4 col-sm-12">
+            @if (rowItems.Image != null )
+            {
+                <img src="@rowItems.Image.GetCropUrl(490,383)" class="card-img-top" alt="@rowItems.Image.Name">
+
+            }
+            <div class="card-body">
+            @if(!String.IsNullOrWhiteSpace(rowItems.Title))
+            {
+                    <h5 class="card-title">@rowItems.Title</h5>
+            }
+            @if (!String.IsNullOrWhiteSpace(rowItems.Description))
+            {
+                    <p class="card-text">@rowItems.Description</p>
+            }
+            @if (rowItems.Link != null)
+            {
+                    <a href="@rowItems.Link.Url" target="@rowItems.Link.Target" class="btn btn-primary">@rowItems.Link.Name</a>
+            }
+            </div>
+        </div>
+    }
+    
+    
+</div>
